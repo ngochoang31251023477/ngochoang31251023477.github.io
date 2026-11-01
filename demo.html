@@ -1,0 +1,2662 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cổng Thông Tin Học Bổng Sinh Viên UEH | ĐH Kinh tế TP.HCM</title>
+  <meta name="description" content="Nền tảng tra cứu, tự động đánh giá điều kiện GPA/ĐRL và quản lý hồ sơ học bổng toàn diện dành cho sinh viên Đại học Kinh tế TP. Hồ Chí Minh (UEH)." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & CSS TOKENS (UEH PALETTE)
+       ========================================================================== */
+    :root {
+      --ueh-primary: #00583d;
+      --ueh-primary-dark: #003d2a;
+      --ueh-primary-light: #087f5b;
+      --ueh-secondary: #0b2545;
+      --ueh-accent: #f59e0b;
+      --ueh-accent-hover: #d97706;
+      --ueh-emerald-bg: #ecfdf5;
+      --ueh-emerald-border: #a7f3d0;
+      
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+
+      --success-bg: #dcfce7;
+      --success-text: #15803d;
+      --warning-bg: #fef3c7;
+      --warning-text: #b45309;
+      --danger-bg: #fee2e2;
+      --danger-text: #b91c1c;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.25s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--gray-50);
+      color: var(--gray-800);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* ==========================================================================
+       HEADER & NAVIGATION
+       ========================================================================== */
+    .site-header {
+      background: linear-gradient(135deg, var(--ueh-primary-dark) 0%, var(--ueh-primary) 70%, #066b4c 100%);
+      color: #ffffff;
+      padding: 1.25rem 0 1rem;
+      border-bottom: 3px solid var(--ueh-accent);
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .brand-title h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-title p {
+      font-size: 0.78rem;
+      color: #a7f3d0;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn-notif-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .btn-notif-toggle:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-notif-toggle.active {
+      background: #10b981;
+      border-color: #059669;
+    }
+
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+      scrollbar-width: none;
+    }
+
+    .nav-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-tab-btn {
+      background: transparent;
+      border: none;
+      color: #d1fae5;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.6rem 1.1rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .nav-tab-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    .nav-tab-btn.active {
+      background: #ffffff;
+      color: var(--ueh-primary-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab-badge {
+      background: var(--ueh-accent);
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.1rem 0.45rem;
+      border-radius: var(--radius-full);
+      line-height: 1;
+    }
+
+    .nav-tab-btn.active .tab-badge {
+      background: var(--ueh-primary);
+      color: #ffffff;
+    }
+
+    /* ==========================================================================
+       MAIN CONTENT SECTIONS & LAYOUT
+       ========================================================================== */
+    main {
+      padding: 1.75rem 0 3rem;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       SMART FILTER SECTION (MỤC 4)
+       ========================================================================== */
+    .filter-card {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-md);
+      padding: 1.5rem;
+      margin-bottom: 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .filter-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--ueh-primary), var(--ueh-accent));
+    }
+
+    .filter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .filter-header h2 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--ueh-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-header p {
+      font-size: 0.85rem;
+      color: var(--gray-500);
+      margin-top: 0.2rem;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .filter-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gray-700);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .filter-input, .filter-select {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.875rem;
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--radius-md);
+      background-color: #ffffff;
+      color: var(--gray-800);
+      font-family: inherit;
+      transition: var(--transition-fast);
+      outline: none;
+    }
+
+    .filter-input:focus, .filter-select:focus {
+      border-color: var(--ueh-primary);
+      box-shadow: 0 0 0 3px rgba(0, 88, 61, 0.12);
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--gray-200);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .filter-summary {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .badge-eligible-count {
+      background: var(--success-bg);
+      color: var(--success-text);
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .btn-reset-filter {
+      background: var(--gray-100);
+      color: var(--gray-700);
+      border: 1px solid var(--gray-300);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-reset-filter:hover {
+      background: var(--gray-200);
+    }
+
+    /* Category Filter Pills */
+    .category-pills {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .pill-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--gray-300);
+      background: #ffffff;
+      color: var(--gray-700);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .pill-btn:hover {
+      border-color: var(--ueh-primary);
+      color: var(--ueh-primary);
+    }
+
+    .pill-btn.active {
+      background: var(--ueh-primary);
+      color: #ffffff;
+      border-color: var(--ueh-primary);
+    }
+
+    /* ==========================================================================
+       SCHOLARSHIP CARDS GRID (MỤC 3)
+       ========================================================================== */
+    .scholarship-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200);
+      padding: 1.35rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--ueh-emerald-border);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      gap: 0.5rem;
+    }
+
+    .badge-status {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .status-dang-nhan {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-sap-mo {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-het-han {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+
+    .badge-source {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray-500);
+      background: var(--gray-100);
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      line-height: 1.35;
+      margin-bottom: 0.65rem;
+      min-height: 2.8rem;
+    }
+
+    .card-stats {
+      background: var(--gray-50);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 0.9rem;
+      margin-bottom: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-label {
+      color: var(--gray-500);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .stat-value {
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    .stat-value.money {
+      color: var(--ueh-primary);
+      font-size: 0.92rem;
+    }
+
+    .stat-value.deadline-urgent {
+      color: #e11d48;
+      font-weight: 800;
+      animation: pulseAlert 2s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Eligibility Banner */
+    .eligibility-box {
+      border-radius: var(--radius-md);
+      padding: 0.6rem 0.8rem;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .eligibility-pass {
+      background: var(--ueh-emerald-bg);
+      border: 1px solid var(--ueh-emerald-border);
+      color: var(--ueh-primary);
+      font-weight: 600;
+    }
+
+    .eligibility-fail {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+
+    .eligibility-fail ul {
+      margin-top: 0.25rem;
+      padding-left: 1.1rem;
+    }
+
+    /* Card Action Buttons */
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .btn-detail {
+      flex: 1;
+      padding: 0.6rem 0.8rem;
+      background: #ffffff;
+      border: 1.5px solid var(--ueh-primary);
+      color: var(--ueh-primary);
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .btn-detail:hover {
+      background: var(--ueh-emerald-bg);
+    }
+
+    .btn-save-toggle {
+      flex: 1.2;
+      padding: 0.6rem 0.8rem;
+      background: var(--ueh-primary);
+      border: 1.5px solid var(--ueh-primary);
+      color: #ffffff;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .btn-save-toggle:hover {
+      background: var(--ueh-primary-dark);
+      border-color: var(--ueh-primary-dark);
+    }
+
+    .btn-save-toggle.saved {
+      background: var(--gray-100);
+      color: var(--gray-700);
+      border-color: var(--gray-300);
+    }
+
+    .btn-save-toggle.saved:hover {
+      background: var(--gray-200);
+      color: #e11d48;
+    }
+
+    .btn-save-toggle:disabled, .btn-detail:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    /* ==========================================================================
+       HỒ SƠ CỦA TÔI (MỤC 6)
+       ========================================================================== */
+    .profile-section {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-md);
+      padding: 1.75rem;
+    }
+
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .profile-title h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--ueh-secondary);
+    }
+
+    .profile-title p {
+      font-size: 0.85rem;
+      color: var(--gray-500);
+    }
+
+    .saved-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .saved-item-card {
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      background: #ffffff;
+      transition: border-color var(--transition-fast);
+    }
+
+    .saved-item-card.urgent {
+      border-color: #fca5a5;
+      background: #fffafa;
+    }
+
+    .saved-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .saved-item-header h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--gray-900);
+    }
+
+    .deadline-pill {
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .deadline-urgent {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .deadline-normal {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    /* Checklist Box */
+    .checklist-container {
+      margin-top: 1rem;
+      background: var(--gray-50);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+
+    .checklist-progress-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--gray-700);
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 7px;
+      background: var(--gray-200);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-bottom: 0.85rem;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--ueh-primary), var(--ueh-primary-light));
+      border-radius: var(--radius-full);
+      transition: width 0.3s ease;
+    }
+
+    .checklist-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .checklist-label {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.875rem;
+      cursor: pointer;
+      padding: 0.35rem 0.5rem;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition-fast);
+    }
+
+    .checklist-label:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .checklist-checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--ueh-primary);
+    }
+
+    .checklist-text.checked {
+      text-decoration: line-through;
+      color: var(--gray-400);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      background: var(--gray-50);
+      border-radius: var(--radius-lg);
+      border: 2px dashed var(--gray-300);
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .empty-state h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 0.35rem;
+    }
+
+    .empty-state p {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+      max-width: 480px;
+      margin: 0 auto 1.25rem;
+    }
+
+    /* Pending business section */
+    .pending-proposals-box {
+      margin-top: 2rem;
+      border-top: 2px dashed var(--gray-200);
+      padding-top: 1.5rem;
+    }
+
+    .pending-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .pending-card {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    /* ==========================================================================
+       HƯỚNG DẪN GIẤY TỜ (MỤC 8)
+       ========================================================================== */
+    .guide-section {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-md);
+      padding: 2rem;
+    }
+
+    .guide-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--ueh-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .guide-subtitle {
+      font-size: 0.9rem;
+      color: var(--gray-500);
+      margin-bottom: 1.75rem;
+    }
+
+    .step-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .step-card {
+      background: var(--gray-50);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      border: 1px solid var(--gray-200);
+      position: relative;
+    }
+
+    .step-number {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      background: var(--ueh-primary);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border-radius: var(--radius-full);
+      text-align: center;
+      line-height: 28px;
+      margin-bottom: 0.75rem;
+    }
+
+    .step-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 0.35rem;
+    }
+
+    .step-card p {
+      font-size: 0.85rem;
+      color: var(--gray-600);
+      line-height: 1.45;
+    }
+
+    .docs-table-wrap {
+      margin-top: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .docs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      text-align: left;
+    }
+
+    .docs-table th, .docs-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .docs-table th {
+      background: var(--gray-100);
+      color: var(--gray-700);
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       CỔNG DOANH NGHIỆP (MỤC 9)
+       ========================================================================== */
+    .business-section {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-md);
+      padding: 2rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+    }
+
+    .form-grid .full-col {
+      grid-column: span 2;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gray-700);
+    }
+
+    .form-input, .form-textarea {
+      padding: 0.75rem 0.95rem;
+      font-size: 0.9rem;
+      border: 1.5px solid var(--gray-300);
+      border-radius: var(--radius-md);
+      outline: none;
+      font-family: inherit;
+      transition: var(--transition-fast);
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--ueh-primary);
+      box-shadow: 0 0 0 3px rgba(0, 88, 61, 0.12);
+    }
+
+    .btn-submit-biz {
+      background: var(--ueh-primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.85rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-submit-biz:hover {
+      background: var(--ueh-primary-dark);
+    }
+
+    .btn-submit-biz:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    /* ==========================================================================
+       MODAL CHI TIẾT (MỤC 5)
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-xl);
+      padding: 1.75rem;
+      position: relative;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: var(--gray-100);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--gray-600);
+      transition: var(--transition-fast);
+    }
+
+    .modal-close-btn:hover {
+      background: var(--gray-200);
+      color: var(--gray-900);
+    }
+
+    .modal-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      padding-right: 2.5rem;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-badges {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .modal-section {
+      background: var(--gray-50);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.15rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .modal-section h4 {
+      font-weight: 800;
+      color: var(--gray-900);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .modal-section ul {
+      padding-left: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    /* ==========================================================================
+       TOAST NOTIFICATIONS & MOCK BACKEND STATUS BADGE
+       ========================================================================== */
+    #toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #1e293b;
+      color: #ffffff;
+      padding: 0.75rem 1.1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      pointer-events: auto;
+      animation: slideInRight 0.3s ease, fadeOut 0.3s ease 3.2s forwards;
+      border-left: 4px solid var(--ueh-accent);
+    }
+
+    .toast.success {
+      border-left-color: #10b981;
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: translateY(8px); }
+    }
+
+    /* Mock Backend Floating Status */
+    .mock-backend-pill {
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(8px);
+      color: #f1f5f9;
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: var(--radius-full);
+      box-shadow: 0 0 6px #10b981;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .btn-reset-session {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 0.72rem;
+      padding: 0 0.2rem;
+    }
+
+    .btn-reset-session:hover {
+      color: #f87171;
+    }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: currentColor;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    .site-footer {
+      background: #ffffff;
+      border-top: 1px solid var(--gray-200);
+      padding: 1.5rem 0;
+      color: var(--gray-500);
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .scholarship-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-grid .full-col {
+        grid-column: span 1;
+      }
+      .filter-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       HEADER & NAVIGATION (UEH BRANDED)
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-top">
+        <div class="brand-wrap">
+          <div class="brand-logo">🎓</div>
+          <div class="brand-title">
+            <p>Đại học Kinh tế TP. Hồ Chí Minh (UEH)</p>
+            <h1>Cổng Thông Tin Học Bổng Sinh Viên</h1>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button id="btn-toggle-notif" class="btn-notif-toggle" title="Nhận thông báo nhắc nhở khi học bổng sắp hết hạn">
+            🔔 <span>Bật nhắc hạn nộp</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs" aria-label="Điều hướng chính">
+        <button class="nav-tab-btn active" data-tab="tab-all">
+          <span>📚 Tất cả học bổng</span>
+          <span class="tab-badge" id="badge-total-count">0</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-profile">
+          <span>📁 Hồ sơ của tôi</span>
+          <span class="tab-badge" id="badge-saved-count">0</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-guide">
+          <span>📋 Hướng dẫn giấy tờ</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="tab-business">
+          <span>🏢 Cổng Doanh nghiệp</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN APP CONTAINER
+       ======================================================================== -->
+  <main class="container">
+
+    <!-- ====================================================================
+         TAB 1: TẤT CẢ HỌC BỔNG & BỘ LỌC THÔNG MINH
+         ==================================================================== -->
+    <section id="tab-all" class="tab-content active">
+
+      <!-- Ô TÌM HỌC BỔNG HỢP VỚI MÌNH (MỤC 4) -->
+      <div class="filter-card">
+        <div class="filter-header">
+          <div>
+            <h2>🔍 Ô tìm học bổng hợp với mình</h2>
+            <p>Điền GPA, điểm rèn luyện, khóa và ngành của bạn để hệ thống tự động kiểm tra và gợi ý các gói học bổng phù hợp.</p>
+          </div>
+        </div>
+
+        <div class="filter-grid">
+          <div class="filter-group">
+            <label class="filter-label" for="filter-gpa">
+              <span>Điểm GPA tích lũy</span>
+              <small style="color:var(--gray-400)">Thang 4.0</small>
+            </label>
+            <input type="number" id="filter-gpa" class="filter-input" step="0.1" min="0" max="4.0" placeholder="VD: 3.2" />
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label" for="filter-drl">
+              <span>Điểm Rèn Luyện (ĐRL)</span>
+              <small style="color:var(--gray-400)">Thang 100</small>
+            </label>
+            <input type="number" id="filter-drl" class="filter-input" min="0" max="100" placeholder="VD: 80" />
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label" for="filter-khoa">Khóa sinh viên</label>
+            <select id="filter-khoa" class="filter-select">
+              <option value="">Tất cả các khóa</option>
+              <option value="K50">Khóa K50 (Năm 3)</option>
+              <option value="K51">Khóa K51 (Năm 2)</option>
+              <option value="K52">Khóa K52 (Tân sinh viên)</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label" for="filter-nganh">Chuyên ngành học</label>
+            <input type="text" id="filter-nganh" class="filter-input" placeholder="VD: Marketing, Tài chính..." />
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label" for="filter-nguyen-vong">Mong muốn học bổng</label>
+            <select id="filter-nguyen-vong" class="filter-select">
+              <option value="all">Tất cả nguyện vọng</option>
+              <option value="ho-tro">Hỗ trợ tài chính / Khó khăn</option>
+              <option value="thanh-tich">Khen thưởng thành tích tốt</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-actions">
+          <div class="filter-summary">
+            <span>Tìm thấy <strong id="lbl-total-found">0</strong> học bổng</span>
+            <span id="badge-eligible-wrap" class="badge-eligible-count" style="display:none;">
+              🎉 Có <span id="lbl-eligible-count">0</span> học bổng bạn đủ điều kiện nộp
+            </span>
+          </div>
+          <button id="btn-reset-filters" class="btn-reset-filter" title="Xóa toàn bộ tiêu chí lọc">
+            🔄 Xóa bộ lọc
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="category-pills">
+        <button class="pill-btn active" data-cat="all">Tất cả học bổng (<span id="count-cat-all">0</span>)</button>
+        <button class="pill-btn" data-cat="truong">🏛️ Học bổng UEH (<span id="count-cat-truong">0</span>)</button>
+        <button class="pill-btn" data-cat="doanh-nghiep">🏢 Doanh nghiệp tài trợ (<span id="count-cat-dn">0</span>)</button>
+        <button class="pill-btn" data-cat="du-dieu-kien">✅ Đủ điều kiện nộp (<span id="count-cat-eligible">0</span>)</button>
+      </div>
+
+      <!-- Danh sách thẻ học bổng -->
+      <div id="scholarships-grid-container" class="scholarship-grid">
+        <!-- Rendered by RenderController -->
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         TAB 2: HỒ SƠ CỦA TÔI (MỤC 6 & MỤC 7)
+         ==================================================================== -->
+    <section id="tab-profile" class="tab-content">
+      <div class="profile-section">
+        <div class="profile-header">
+          <div class="profile-title">
+            <h2>📁 Hồ sơ học bổng của tôi (<span id="lbl-profile-count">0</span>)</h2>
+            <p>Theo dõi thời hạn nộp và đánh dấu tiến độ chuẩn bị giấy tờ hồ sơ. Dữ liệu được lưu trong phiên (sessionStorage).</p>
+          </div>
+          <button id="btn-profile-notif" class="btn-notif-toggle">
+            🔔 <span>Cài đặt thông báo</span>
+          </button>
+        </div>
+
+        <!-- Danh sách học bổng đã lưu -->
+        <div id="profile-saved-container" class="saved-list">
+          <!-- Rendered by RenderController -->
+        </div>
+
+        <!-- Danh sách học bổng doanh nghiệp gửi đang chờ duyệt -->
+        <div id="pending-proposals-wrap" class="pending-proposals-box" style="display:none;">
+          <h3 class="pending-title">⏳ Học bổng Doanh nghiệp đã gửi — Đang chờ Ban Chăm sóc người học duyệt</h3>
+          <p style="font-size:0.82rem; color:var(--gray-600); margin-bottom:0.75rem;">
+            Các gói học bổng này do đối tác doanh nghiệp vừa gửi qua Cổng tiếp nhận. Thông tin cần được Ban Chăm sóc người học UEH đối chiếu và kiểm duyệt trước khi công bố công khai trên trang chủ.
+          </p>
+          <div id="pending-proposals-list">
+            <!-- Rendered by RenderController -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         TAB 3: HƯỚNG DẪN CHUẨN BỊ GIẤY TỜ (MỤC 8)
+         ==================================================================== -->
+    <section id="tab-guide" class="tab-content">
+      <div class="guide-section">
+        <h2 class="guide-title">📋 Hướng dẫn chuẩn bị giấy tờ & nộp hồ sơ học bổng UEH</h2>
+        <p class="guide-subtitle">Quy trình 4 bước chuẩn giúp sinh viên UEH hoàn thiện hồ sơ nhanh chóng, đúng quy định và không bỏ lỡ hạn nộp.</p>
+
+        <div class="step-grid">
+          <div class="step-card">
+            <span class="step-number">1</span>
+            <h3>Lọc học bổng phù hợp</h3>
+            <p>Nhập điểm GPA, ĐRL, khóa học vào ô lọc ở đầu trang để hệ thống tự động tìm các học bổng bạn hoàn toàn đủ tiêu chuẩn đăng ký.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">2</span>
+            <h3>Thêm vào Hồ sơ của tôi</h3>
+            <p>Nhấn "+ Hồ sơ của tôi" ở 1 đến 2 học bổng trọng tâm có mức độ phù hợp và cơ hội trúng tuyển cao nhất để tiện theo dõi hạn nộp.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">3</span>
+            <h3>Chuẩn bị giấy tờ & Tick kiểm</h3>
+            <p>Mở mục "Hồ sơ của tôi", in danh mục giấy tờ cần thiết. Làm xong món nào tick vào món đó để theo dõi tiến độ chuẩn bị hồ sơ.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">4</span>
+            <h3>Nộp hồ sơ trước hạn</h3>
+            <p>Luôn nộp hồ sơ trước hạn chót ít nhất 2–3 ngày (online qua dsa.ueh.edu.vn hoặc nộp giấy tại Ban Chăm sóc người học) để tránh trục trặc.</p>
+          </div>
+        </div>
+
+        <h3 style="font-size:1.15rem; font-weight:800; color:var(--ueh-secondary); margin-bottom:0.75rem;">
+          📄 Bảng danh mục giấy tờ xét học bổng thường gặp tại UEH
+        </h3>
+        <div class="docs-table-wrap">
+          <table class="docs-table">
+            <thead>
+              <tr>
+                <th>Loại giấy tờ</th>
+                <th>Áp dụng cho</th>
+                <th>Nơi xin / Cách cấp</th>
+                <th>Lưu ý quan trọng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Đơn xin học bổng</strong></td>
+                <td>Hầu hết các học bổng</td>
+                <td>Tải mẫu chuẩn trên dsa.ueh.edu.vn hoặc viết tay theo mẫu</td>
+                <td>Ký và ghi rõ họ tên; dán ảnh thẻ 3x4 nếu yêu cầu</td>
+              </tr>
+              <tr>
+                <td><strong>Bảng điểm tích lũy học kỳ</strong></td>
+                <td>Tất cả học bổng</td>
+                <td>In trực tiếp từ portal sinh viên hoặc xin dấu tại Phòng Đào tạo</td>
+                <td>GPA phải đạt mức tối thiểu ghi rõ trong thông báo</td>
+              </tr>
+              <tr>
+                <td><strong>Xác nhận Điểm rèn luyện (ĐRL)</strong></td>
+                <td>Học bổng KKHT, Doanh nghiệp</td>
+                <td>Trích xuất từ hệ thống quản lý rèn luyện UEH</td>
+                <td>Điểm rèn luyện học kỳ xét tuyển hoặc tích lũy cả năm</td>
+              </tr>
+              <tr>
+                <td><strong>Xác nhận hoàn cảnh khó khăn / Sổ hộ nghèo</strong></td>
+                <td>Học bổng Hỗ trợ học tập</td>
+                <td>UBND phường/xã nơi cư trú cấp xác nhận</td>
+                <td>Bản photo công chứng còn thời hạn trong vòng 6 tháng</td>
+              </tr>
+              <tr>
+                <td><strong>Chứng chỉ ngoại ngữ & Minh chứng ngoại khóa</strong></td>
+                <td>Học bổng Doanh nghiệp</td>
+                <td>Chứng chỉ IELTS/TOEIC, giấy chứng nhận tham gia chiến dịch UEH</td>
+                <td>Photo có công chứng hoặc mang bản gốc đối chiếu</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         TAB 4: CỔNG NHẬN THÔNG TIN TỪ DOANH NGHIỆP (MỤC 9)
+         ==================================================================== -->
+    <section id="tab-business" class="tab-content">
+      <div class="business-section">
+        <h2 class="guide-title">🏢 Cổng tiếp nhận tài trợ học bổng từ Doanh nghiệp</h2>
+        <p class="guide-subtitle">
+          Quý Doanh nghiệp, Tổ chức tài trợ vui lòng điền thông tin chương trình học bổng mới tại biểu mẫu bên dưới.
+          Thông tin sau khi gửi sẽ được chuyển vào <strong>trạng thái chờ duyệt (Pending State)</strong> để Ban Chăm sóc người học UEH đối chiếu và phê duyệt trước khi công bố rộng rãi đến sinh viên.
+        </p>
+
+        <form id="form-business-scholarship">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="biz-ten">Tên gói học bổng *</label>
+              <input type="text" id="biz-ten" class="form-input" placeholder="VD: Học bổng Thắp sáng Tài năng Trẻ 2026" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="biz-donvi">Tên Doanh nghiệp / Tổ chức tài trợ *</label>
+              <input type="text" id="biz-donvi" class="form-input" placeholder="VD: Tập đoàn Công nghệ Tài chính Alpha" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="biz-muctien">Mức tiền / Trị giá mỗi suất *</label>
+              <input type="text" id="biz-muctien" class="form-input" placeholder="VD: 15.000.000 VNĐ / suất" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="biz-handong">Hạn nộp dự kiến *</label>
+              <input type="date" id="biz-handong" class="form-input" required />
+            </div>
+
+            <div class="form-group full-col">
+              <label class="form-label" for="biz-dieukien">Tiêu chuẩn & Điều kiện ứng tuyển (GPA, Khóa, Ngành...) *</label>
+              <textarea id="biz-dieukien" class="form-textarea" rows="3" placeholder="VD: GPA từ 3.0 trở lên; Ưu tiên sinh viên khóa K51, K52 khối ngành Kinh tế, Tài chính, Công nghệ; Năng nổ trong hoạt động Đoàn - Hội..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="biz-lienhe">Người liên hệ & Điện thoại / Email *</label>
+              <input type="text" id="biz-lienhe" class="form-input" placeholder="VD: Nguyễn Văn A - hr@alpha.vn - 0901234567" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="biz-cachnop">Hình thức nhận hồ sơ</label>
+              <input type="text" id="biz-cachnop" class="form-input" placeholder="VD: Nộp online qua link của doanh nghiệp hoặc nộp qua DSA UEH" />
+            </div>
+
+            <div class="form-group full-col">
+              <button type="submit" id="btn-submit-biz" class="btn-submit-biz">
+                <span>🚀 Gửi đề xuất học bổng để Ban Chăm sóc người học duyệt</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       MODAL XEM CHI TIẾT HỌC BỔNG (MỤC 5)
+       ======================================================================== -->
+  <div id="modal-detail-backdrop" class="modal-backdrop">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-detail-title">
+      <button id="modal-detail-close" class="modal-close-btn" aria-label="Đóng">&times;</button>
+      
+      <div id="modal-detail-body">
+        <!-- Rendered dynamically by RenderController -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       TOAST NOTIFICATION CONTAINER
+       ======================================================================== -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- ========================================================================
+       MOCK BACKEND FLOATING STATUS (Kiến trúc Zero-Backend Prototype)
+       ======================================================================== -->
+  <div class="mock-backend-pill" title="Mô phỏng Client-side Mock Backend có độ trễ mạng thực tế">
+    <span class="status-dot"></span>
+    <span>Mock API: Online (400ms delay)</span>
+    <span style="color:#64748b">•</span>
+    <span>sessionStorage</span>
+    <button id="btn-reset-session-pill" class="btn-reset-session" title="Xóa dữ liệu session để demo từ đầu">Làm mới dữ liệu</button>
+  </div>
+
+  <!-- ========================================================================
+       FOOTER (MỤC 10)
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <p><strong>Cổng Thông Tin Học Bổng Sinh Viên UEH</strong> — Dự án Mẫu Thử Tương Tác (Zero-Backend Prototype).</p>
+          <p>Cập nhật dữ liệu chính thức từ <em>Ban Chăm sóc người học Đại học Kinh tế TP.HCM (dsa.ueh.edu.vn)</em>.</p>
+        </div>
+        <div>
+          <p>⚠️ <em>Lưu ý: Kết quả lọc và gợi ý chỉ mang tính chất tham khảo; quyết định cuối cùng thuộc về đơn vị xét duyệt.</em></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ========================================================================
+       CORE JAVASCRIPT: DATASET + MOCK API + CONTROLLER
+       ======================================================================== -->
+  <script>
+    /**
+     * ========================================================================
+     * MODULE 1: STATIC DATASET (DANH SÁCH HỌC BỔNG CHUẨN UEH)
+     * ========================================================================
+     */
+    const SCHOLARSHIPS_DATASET = [
+      {
+        id: "ueh-kkht-2026-hk1",
+        ten: "Học bổng Khuyến khích học tập HK1/2026",
+        loai: "KKHT",
+        phanLoai: "truong",
+        doiTuong: { khoa: ["K50", "K51", "K52"], nganh: [] },
+        gpaMin: 3.2,
+        drlMin: 70,
+        dieuKienKhac: ["Không bị kỷ luật trong học kỳ", "Đăng ký tối thiểu 15 tín chỉ học tập"],
+        mucTien: "10.000.000 - 20.000.000 VNĐ/suất",
+        ngayMo: "2026-09-15",
+        ngayDong: "2026-11-15",
+        cachNop: "Nộp online qua cổng dsa.ueh.edu.vn và nộp bổ sung hồ sơ giấy tại Ban Chăm sóc người học",
+        giayTo: ["Đơn xin học bổng KKHT", "Bảng điểm học kỳ có xác nhận", "Bảng điểm rèn luyện"],
+        moTa: "Chương trình học bổng định kỳ của UEH nhằm khen thưởng thành tích học tập và rèn luyện xuất sắc của sinh viên các khóa chính quy.",
+        nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-khuyen-khich-hoc-tap", donVi: "Ban Chăm sóc người học UEH" }
+      },
+      {
+        id: "ueh-htk-2026",
+        ten: "Học bổng Hỗ trợ học tập sinh viên khó khăn 2026",
+        loai: "HTHT",
+        phanLoai: "truong",
+        doiTuong: { khoa: [], nganh: [] },
+        gpaMin: 2.5,
+        drlMin: 65,
+        dieuKienKhac: ["Hoàn cảnh gia đình khó khăn", "Có sổ hộ nghèo/cận nghèo hoặc xác nhận khó khăn của địa phương"],
+        mucTien: "5.000.000 - 10.000.000 VNĐ/suất",
+        ngayMo: "2026-10-01",
+        ngayDong: "2026-11-30",
+        cachNop: "Nộp hồ sơ giấy trực tiếp tại Văn phòng Ban Chăm sóc người học (Cơ sở B hoặc cơ sở Nguyễn Văn Linh)",
+        giayTo: ["Đơn xin hỗ trợ học tập", "Bảng điểm tích lũy", "Giấy xác nhận hoàn cảnh khó khăn", "Bản sao CCCD có công chứng"],
+        moTa: "Gói học bổng nhân văn nhằm tiếp sức cho các bạn sinh viên có hoàn cảnh gia đình đặc biệt khó khăn an tâm tiếp tục học tập tại UEH.",
+        nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-ho-tro-hoc-tap", donVi: "Ban Chăm sóc người học UEH" }
+      },
+      {
+        id: "dn-vietcombank-2026",
+        ten: "Học bổng Vietcombank Tiếp bước Tương lai 2026",
+        loai: "DN",
+        phanLoai: "doanh-nghiep",
+        doiTuong: { khoa: ["K50", "K51", "K52"], nganh: ["Kinh doanh", "Tài chính", "Ngân hàng", "Kế toán"] },
+        gpaMin: 3.0,
+        drlMin: 75,
+        dieuKienKhac: ["Ưu tiên sinh viên năm 2 và năm 3", "Tích cực tham gia ít nhất 1 hoạt động ngoại khóa"],
+        mucTien: "20.000.000 VNĐ/suất + Cơ hội thực tập",
+        ngayMo: "2026-10-10",
+        ngayDong: "2026-11-08", // Gần hạn để demo cảnh báo
+        cachNop: "Điền form online của Vietcombank, UEH tổng hợp và đề cử danh sách phỏng vấn",
+        giayTo: ["Đơn đăng ký học bổng", "Bảng điểm chính thức", "CV cá nhân và minh chứng hoạt động ngoại khóa"],
+        moTa: "Chương trình học bổng thường niên do Ngân hàng Vietcombank phối hợp cùng UEH tài trợ cho sinh viên khối ngành Kinh tế - Tài chính - Ngân hàng.",
+        nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-vietcombank", donVi: "Ngân hàng TMCP Ngoại thương Việt Nam x UEH" }
+      },
+      {
+        id: "dn-lotte-2026",
+        ten: "Học bổng LOTTE Foundation 2026",
+        loai: "DN",
+        phanLoai: "doanh-nghiep",
+        doiTuong: { khoa: ["K51", "K52"], nganh: ["Marketing", "Kinh doanh quốc tế", "Thương mại điện tử"] },
+        gpaMin: 2.8,
+        drlMin: 70,
+        dieuKienKhac: ["Ưu tiên sinh viên năng động, có chứng chỉ tiếng Hàn hoặc tiếng Anh là lợi thế"],
+        mucTien: "15.000.000 VNĐ/suất",
+        ngayMo: "2026-09-20",
+        ngayDong: "2026-11-05", // Sắp hết hạn để demo
+        cachNop: "Nộp hồ sơ online qua link LOTTE và tham gia phỏng vấn trực tiếp tại TP.HCM",
+        giayTo: ["Đơn xin học bổng LOTTE", "Bảng điểm tiếng Anh/tiếng Hàn", "Minh chứng hoạt động xã hội"],
+        moTa: "Học bổng quốc tế từ Quỹ học bổng LOTTE Hàn Quốc dành riêng cho sinh viên năng động ngành Marketing và Kinh doanh quốc tế.",
+        nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-lotte", donVi: "Quỹ LOTTE Foundation Việt Nam" }
+      },
+      {
+        id: "dn-ajinomoto-2026",
+        ten: "Học bổng Tài năng Ajinomoto 2026",
+        loai: "DN",
+        phanLoai: "doanh-nghiep",
+        doiTuong: { khoa: ["K50", "K51"], nganh: ["Quản trị kinh doanh", "Logistics", "Chuỗi cung ứng"] },
+        gpaMin: 3.2,
+        drlMin: 75,
+        dieuKienKhac: ["Cam kết tham gia chuyến tham quan thực tế nhà máy và buổi đào tạo định hướng"],
+        mucTien: "25.000.000 VNĐ/suất",
+        ngayMo: "2026-10-20",
+        ngayDong: "2026-12-10",
+        cachNop: "Gửi hồ sơ qua email Ban Chăm sóc người học và nộp bản giấy",
+        giayTo: ["Đơn xin học bổng", "Bảng điểm 2 học kỳ gần nhất", "Bài luận nguyện vọng 500 từ"],
+        moTa: "Học bổng giá trị cao từ Công ty Ajinomoto Việt Nam nhằm khích lệ tinh thần học hỏi của sinh viên khối ngành Quản trị và Chuỗi cung ứng.",
+        nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-ajinomoto", donVi: "Công ty Ajinomoto Việt Nam" }
+      },
+      {
+        id: "ueh-tiep-suc-2026",
+        ten: "Học bổng Tiếp sức đến trường Tân sinh viên K52",
+        loai: "HTHT",
+        phanLoai: "truong",
+        doiTuong: { khoa: ["K52"], nganh: [] },
+        gpaMin: 2.0,
+        drlMin: 60,
+        dieuKienKhac: ["Chỉ dành cho Tân sinh viên K52", "Gia đình có hoàn cảnh khó khăn, ưu tiên khu vực miền Trung và vùng sâu vùng xa"],
+        mucTien: "7.000.000 VNĐ/suất",
+        ngayMo: "2026-10-05",
+        ngayDong: "2026-11-20",
+        cachNop: "Nộp hồ sơ trực tiếp tại bàn hỗ trợ Tân sinh viên K52, cơ sở A hoặc B",
+        giayTo: ["Đơn xin hỗ trợ tiếp sức", "Bản photo Giấy báo trúng tuyển UEH", "Giấy xác nhận hộ nghèo/khó khăn"],
+        moTa: "Chương trình đồng hành đặc biệt của UEH hỗ trợ các bạn tân sinh viên K52 vững bước trong những ngày đầu nhập học đại học.",
+        nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-tiep-suc-den-truong", donVi: "UEH x Hội Cựu sinh viên" }
+      },
+      {
+        id: "dn-bidv-2026",
+        ten: "Học bổng BIDV Ươm mầm Tài năng Ngân hàng 2026",
+        loai: "DN",
+        phanLoai: "doanh-nghiep",
+        doiTuong: { khoa: ["K50", "K51"], nganh: ["Tài chính", "Ngân hàng", "Kinh tế"] },
+        gpaMin: 3.4,
+        drlMin: 80,
+        dieuKienKhac: ["Định hướng làm việc trong ngành Ngân hàng", "Tiếng Anh tương đương IELTS 5.5+ là lợi thế"],
+        mucTien: "30.000.000 VNĐ/suất + Thực tập tại BIDV",
+        ngayMo: "2026-12-01",
+        ngayDong: "2027-01-15",
+        cachNop: "Đăng ký trực tuyến trên cổng DSA từ ngày 01/12/2026",
+        giayTo: ["Đơn xin học bổng", "Bảng điểm tích lũy", "Chứng chỉ ngoại ngữ (nếu có)"],
+        moTa: "Chương trình ươm mầm tinh hoa ngân hàng của BIDV, mang đến cơ hội nhận tài trợ tài chính lớn và ưu tiên tuyển dụng thực tập sinh.",
+        nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-bidv", donVi: "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam (BIDV)" }
+      },
+      {
+        id: "ueh-vuot-kho-2026",
+        ten: "Học bổng Khuyến khích Vượt khó HK2/2026",
+        loai: "HTHT",
+        phanLoai: "truong",
+        doiTuong: { khoa: ["K50", "K51", "K52"], nganh: [] },
+        gpaMin: 3.0,
+        drlMin: 75,
+        dieuKienKhac: ["GPA học kỳ này tăng tối thiểu 0.3 điểm so với học kỳ trước đó"],
+        mucTien: "8.000.000 VNĐ/suất",
+        ngayMo: "2026-11-01",
+        ngayDong: "2026-12-15",
+        cachNop: "Nộp hồ sơ trực tuyến qua hệ thống dsa.ueh.edu.vn",
+        giayTo: ["Đơn xin học bổng vượt khó", "Bảng điểm so sánh 2 học kỳ liên tiếp"],
+        moTa: "Khen thưởng sự nỗ lực vươn lên không ngừng của các bạn sinh viên có kết quả học tập tiến bộ vượt bậc.",
+        nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-vuot-kho", donVi: "Ban Chăm sóc người học UEH" }
+      },
+      {
+        id: "dn-vingroup-2026",
+        ten: "Học bổng Công nghệ Vingroup 2026",
+        loai: "DN",
+        phanLoai: "doanh-nghiep",
+        doiTuong: { khoa: ["K50"], nganh: ["Công nghệ thông tin", "Kinh tế số", "Khoa học dữ liệu"] },
+        gpaMin: 3.6,
+        drlMin: 85,
+        dieuKienKhac: ["Cam kết tham gia dự án công nghệ của Vingroup", "Vượt qua vòng phỏng vấn chuyên môn"],
+        mucTien: "50.000.000 VNĐ/năm",
+        ngayMo: "2026-08-01",
+        ngayDong: "2026-09-30",
+        cachNop: "Đã đóng vòng xét 2026; giữ thông tin để sinh viên tham khảo cho đợt tiếp theo",
+        giayTo: ["Đơn xin học bổng", "Bảng điểm", "Portfolio dự án công nghệ"],
+        moTa: "Gói tài trợ phát triển tài năng trẻ ngành Khoa học dữ liệu & Kinh tế số của Tập đoàn Vingroup.",
+        nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-vingroup", donVi: "Tập đoàn Vingroup" }
+      },
+      {
+        id: "dn-sacombank-2026",
+        ten: "Học bổng Sacombank Ươm mầm Ước mơ 2026",
+        loai: "DN",
+        phanLoai: "doanh-nghiep",
+        doiTuong: { khoa: ["K51", "K52"], nganh: [] },
+        gpaMin: 3.0,
+        drlMin: 70,
+        dieuKienKhac: ["Ưu tiên sinh viên từng tham gia các cuộc thi hoặc tọa đàm do Sacombank bảo trợ"],
+        mucTien: "10.000.000 VNĐ/suất + Học kỳ thực tập hè",
+        ngayMo: "2026-07-01",
+        ngayDong: "2026-08-31",
+        cachNop: "Đã kết thúc nhận hồ sơ đợt 2026",
+        giayTo: ["Đơn xin học bổng", "Bảng điểm tích lũy"],
+        moTa: "Học bổng đồng hành cùng thế hệ trẻ UEH, mang đến hành trang kiến thức và trải nghiệm môi trường làm việc tài chính chuyên nghiệp.",
+        nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-sacombank", donVi: "Ngân hàng TMCP Sài Gòn Thương Tín (Sacombank)" }
+      }
+    ];
+
+    /**
+     * ========================================================================
+     * MODULE 2: MOCK API SERVICE (CLIENT-SIDE SIMULATION WITH LATENCY)
+     * ========================================================================
+     * Mô phỏng độ trễ mạng thực tế (350ms - 450ms) bằng Promise + setTimeout,
+     * lưu trữ dữ liệu vào window.sessionStorage (F5 giữ nguyên, đóng tab xóa).
+     */
+    const MockApiService = {
+      // Giả lập trễ mạng
+      delay(ms = 380) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      },
+
+      // Lấy danh sách ID học bổng đã lưu
+      async getSavedIds() {
+        await this.delay(200);
+        try {
+          const raw = sessionStorage.getItem('ueh_saved_ids');
+          return { status: 200, data: raw ? JSON.parse(raw) : [] };
+        } catch {
+          return { status: 200, data: [] };
+        }
+      },
+
+      // Lưu hoặc bỏ lưu học bổng vào Hồ sơ
+      async toggleSave(id) {
+        await this.delay(400); // 400ms mô phỏng mạng
+        try {
+          const raw = sessionStorage.getItem('ueh_saved_ids');
+          let current = raw ? JSON.parse(raw) : [];
+          let action = '';
+
+          if (current.includes(id)) {
+            current = current.filter(x => x !== id);
+            action = 'removed';
+          } else {
+            current.push(id);
+            action = 'added';
+          }
+          sessionStorage.setItem('ueh_saved_ids', JSON.stringify(current));
+          return { status: 200, action, data: current };
+        } catch (e) {
+          return { status: 500, error: e.message };
+        }
+      },
+
+      // Lấy toàn bộ trạng thái checklist giấy tờ
+      async getChecklist() {
+        await this.delay(150);
+        try {
+          const raw = sessionStorage.getItem('ueh_checklist');
+          return { status: 200, data: raw ? JSON.parse(raw) : {} };
+        } catch {
+          return { status: 200, data: {} };
+        }
+      },
+
+      // Đánh dấu tick / bỏ tick 1 mục giấy tờ
+      async toggleChecklistDoc(scholarshipId, docIndex) {
+        await this.delay(300);
+        try {
+          const raw = sessionStorage.getItem('ueh_checklist');
+          const checklist = raw ? JSON.parse(raw) : {};
+          if (!checklist[scholarshipId]) {
+            checklist[scholarshipId] = {};
+          }
+          checklist[scholarshipId][docIndex] = !checklist[scholarshipId][docIndex];
+          sessionStorage.setItem('ueh_checklist', JSON.stringify(checklist));
+          return { status: 200, data: checklist };
+        } catch (e) {
+          return { status: 500, error: e.message };
+        }
+      },
+
+      // Doanh nghiệp gửi đề xuất học bổng mới (Lưu trạng thái Chờ duyệt - Pending)
+      async submitBusinessScholarship(payload) {
+        await this.delay(500); // 500ms mô phỏng upload form
+        try {
+          const raw = sessionStorage.getItem('ueh_pending_dn');
+          const pending = raw ? JSON.parse(raw) : [];
+          const newEntry = {
+            ...payload,
+            id: 'dn-pending-' + Date.now(),
+            trangThaiDuyet: 'Chờ Ban Chăm sóc người học duyệt',
+            ngayGui: new Date().toISOString().slice(0, 10)
+          };
+          pending.unshift(newEntry);
+          sessionStorage.setItem('ueh_pending_dn', JSON.stringify(pending));
+          return { status: 201, message: 'Đã gửi thành công', data: newEntry };
+        } catch (e) {
+          return { status: 500, error: e.message };
+        }
+      },
+
+      // Lấy danh sách đề xuất chờ duyệt
+      async getPendingScholarships() {
+        await this.delay(200);
+        try {
+          const raw = sessionStorage.getItem('ueh_pending_dn');
+          return { status: 200, data: raw ? JSON.parse(raw) : [] };
+        } catch {
+          return { status: 200, data: [] };
+        }
+      },
+
+      // Khôi phục dữ liệu phiên ban đầu
+      async resetDemoSession() {
+        await this.delay(250);
+        sessionStorage.removeItem('ueh_saved_ids');
+        sessionStorage.removeItem('ueh_checklist');
+        sessionStorage.removeItem('ueh_pending_dn');
+        return { status: 200, message: 'Reset session completed' };
+      }
+    };
+
+    /**
+     * ========================================================================
+     * MODULE 3: RENDER CONTROLLER & BUSINESS LOGIC
+     * ========================================================================
+     */
+    const App = {
+      // Trạng thái ứng dụng
+      state: {
+        activeTab: 'tab-all',
+        categoryFilter: 'all',
+        criteria: {
+          gpa: '',
+          drl: '',
+          khoa: '',
+          nganh: '',
+          nguyenVong: 'all'
+        },
+        savedIds: [],
+        checklist: {},
+        pendingList: [],
+        activeModalId: null,
+        loadingButtons: new Set(), // Chứa ID đang thao tác để disable + spinner
+        isSubmittingBiz: false
+      },
+
+      // Khởi tạo
+      async init() {
+        this.bindEvents();
+        await this.loadInitialData();
+        this.renderAll();
+        this.checkNotificationStatus();
+      },
+
+      // Nạp dữ liệu ban đầu từ Mock API
+      async loadInitialData() {
+        const [savedRes, checkRes, pendingRes] = await Promise.all([
+          MockApiService.getSavedIds(),
+          MockApiService.getChecklist(),
+          MockApiService.getPendingScholarships()
+        ]);
+        this.state.savedIds = savedRes.data || [];
+        this.state.checklist = checkRes.data || {};
+        this.state.pendingList = pendingRes.data || [];
+      },
+
+      // Đăng ký các sự kiện DOM
+      bindEvents() {
+        // Tab switching
+        document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const tabId = btn.getAttribute('data-tab');
+            this.switchTab(tabId);
+          });
+        });
+
+        // Category Pills
+        document.querySelectorAll('.pill-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            this.state.categoryFilter = btn.getAttribute('data-cat');
+            this.renderScholarshipsGrid();
+          });
+        });
+
+        // Filter inputs
+        const filterIds = ['filter-gpa', 'filter-drl', 'filter-khoa', 'filter-nganh', 'filter-nguyen-vong'];
+        filterIds.forEach(id => {
+          const el = document.getElementById(id);
+          el.addEventListener('input', () => this.handleFilterChange());
+        });
+
+        // Reset Filter button
+        document.getElementById('btn-reset-filters').addEventListener('click', () => {
+          document.getElementById('filter-gpa').value = '';
+          document.getElementById('filter-drl').value = '';
+          document.getElementById('filter-khoa').value = '';
+          document.getElementById('filter-nganh').value = '';
+          document.getElementById('filter-nguyen-vong').value = 'all';
+          this.handleFilterChange();
+          this.showToast('Đã xóa bộ lọc về mặc định', 'normal');
+        });
+
+        // Reset Session Pills
+        document.getElementById('btn-reset-session-pill').addEventListener('click', async () => {
+          if (confirm('Bạn muốn làm mới dữ liệu phiên (sessionStorage)? Tất cả học bổng đã lưu và checklist sẽ được xóa.')) {
+            await MockApiService.resetDemoSession();
+            await this.loadInitialData();
+            this.renderAll();
+            this.showToast('[200 OK] Đã khôi phục dữ liệu demo sạch', 'success');
+          }
+        });
+
+        // Modal close
+        document.getElementById('modal-detail-close').addEventListener('click', () => this.closeModal());
+        document.getElementById('modal-detail-backdrop').addEventListener('click', (e) => {
+          if (e.target.id === 'modal-detail-backdrop') this.closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') this.closeModal();
+        });
+
+        // Notification buttons
+        document.getElementById('btn-toggle-notif').addEventListener('click', () => this.toggleNotifications());
+        document.getElementById('btn-profile-notif').addEventListener('click', () => this.toggleNotifications());
+
+        // Business Form submit
+        const bizForm = document.getElementById('form-business-scholarship');
+        bizForm.addEventListener('submit', (e) => this.handleBusinessSubmit(e));
+      },
+
+      // Xử lý thay đổi bộ lọc
+      handleFilterChange() {
+        this.state.criteria = {
+          gpa: document.getElementById('filter-gpa').value.trim(),
+          drl: document.getElementById('filter-drl').value.trim(),
+          khoa: document.getElementById('filter-khoa').value,
+          nganh: document.getElementById('filter-nganh').value.trim(),
+          nguyenVong: document.getElementById('filter-nguyen-vong').value
+        };
+        this.renderScholarshipsGrid();
+      },
+
+      // Chuyển tab
+      switchTab(tabId) {
+        this.state.activeTab = tabId;
+        document.querySelectorAll('.nav-tab-btn').forEach(b => {
+          b.classList.toggle('active', b.getAttribute('data-tab') === tabId);
+        });
+        document.querySelectorAll('.tab-content').forEach(c => {
+          c.classList.toggle('active', c.id === tabId);
+        });
+
+        if (tabId === 'tab-profile') {
+          this.renderProfileSection();
+        }
+      },
+
+      /**
+       * Tính toán trạng thái & Đánh giá điều kiện UEH (Mục 10 & Mục 4)
+       */
+      evaluateScholarship(item, criteria) {
+        const now = new Date();
+        const start = new Date(item.ngayMo);
+        const end = new Date(item.ngayDong);
+
+        // Trạng thái theo thời gian
+        let trangThai = 'dang-nhan';
+        if (now < start) trangThai = 'sap-mo';
+        else if (now > end) trangThai = 'het-han';
+
+        // Số ngày còn lại
+        const diffMs = end - now;
+        const daysLeft = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+        // Kiểm tra tiêu chí cá nhân
+        const lyDoThieu = [];
+        const gpaNum = parseFloat(criteria.gpa);
+        const drlNum = parseInt(criteria.drl, 10);
+
+        if (criteria.gpa !== '' && !isNaN(gpaNum) && gpaNum < item.gpaMin) {
+          lyDoThieu.push(`GPA (${gpaNum}) chưa đạt mức yêu cầu tối thiểu ${item.gpaMin}`);
+        }
+        if (criteria.drl !== '' && !isNaN(drlNum) && drlNum < item.drlMin) {
+          lyDoThieu.push(`Điểm rèn luyện (${drlNum}) thấp hơn tiêu chuẩn ${item.drlMin}`);
+        }
+        if (criteria.khoa && item.doiTuong.khoa.length > 0 && !item.doiTuong.khoa.includes(criteria.khoa)) {
+          lyDoThieu.push(`Học bổng ưu tiên dành cho khóa: ${item.doiTuong.khoa.join(', ')}`);
+        }
+        if (criteria.nganh && item.doiTuong.nganh.length > 0) {
+          const match = item.doiTuong.nganh.some(n => n.toLowerCase().includes(criteria.nganh.toLowerCase()));
+          if (!match) {
+            lyDoThieu.push(`Ưu tiên các chuyên ngành: ${item.doiTuong.nganh.join(', ')}`);
+          }
+        }
+        if (criteria.nguyenVong === 'ho-tro' && item.loai === 'KKHT') {
+          lyDoThieu.push('Bạn chọn hỗ trợ khó khăn, học bổng này thuộc nhóm khen thưởng thành tích học tập');
+        }
+        if (criteria.nguyenVong === 'thanh-tich' && item.loai === 'HTHT') {
+          lyDoThieu.push('Bạn chọn khen thưởng thành tích, học bổng này thuộc nhóm trợ cấp khó khăn');
+        }
+
+        if (trangThai === 'het-han') {
+          lyDoThieu.push('Chương trình đã kết thúc nhận hồ sơ đợt này');
+        }
+
+        return {
+          ...item,
+          trangThai,
+          daysLeft,
+          duDieuKien: lyDoThieu.length === 0,
+          lyDoThieu
+        };
+      },
+
+      // Lấy danh sách đã đánh giá và lọc
+      getFilteredScholarships() {
+        const evaluated = SCHOLARSHIPS_DATASET.map(s => this.evaluateScholarship(s, this.state.criteria));
+
+        // Lọc theo Category Pill
+        let filtered = evaluated;
+        if (this.state.categoryFilter === 'truong') {
+          filtered = filtered.filter(s => s.phanLoai === 'truong');
+        } else if (this.state.categoryFilter === 'doanh-nghiep') {
+          filtered = filtered.filter(s => s.phanLoai === 'doanh-nghiep');
+        } else if (this.state.categoryFilter === 'du-dieu-kien') {
+          filtered = filtered.filter(s => s.duDieuKien);
+        }
+
+        // Sắp xếp: Đang nhận hồ sơ lên trước, đủ điều kiện lên trước, hạn gần lên trước
+        return filtered.sort((a, b) => {
+          const statusOrder = { 'dang-nhan': 0, 'sap-mo': 1, 'het-han': 2 };
+          if (statusOrder[a.trangThai] !== statusOrder[b.trangThai]) {
+            return statusOrder[a.trangThai] - statusOrder[b.trangThai];
+          }
+          if (a.duDieuKien !== b.duDieuKien) {
+            return a.duDieuKien ? -1 : 1;
+          }
+          return a.daysLeft - b.daysLeft;
+        });
+      },
+
+      // Render toàn bộ giao diện
+      renderAll() {
+        this.renderScholarshipsGrid();
+        this.renderProfileSection();
+        this.updateHeaderBadges();
+      },
+
+      // Cập nhật các badge số lượng trên header và pills
+      updateHeaderBadges() {
+        const evaluatedAll = SCHOLARSHIPS_DATASET.map(s => this.evaluateScholarship(s, this.state.criteria));
+        
+        document.getElementById('badge-total-count').textContent = SCHOLARSHIPS_DATASET.length;
+        document.getElementById('badge-saved-count').textContent = this.state.savedIds.length;
+        document.getElementById('lbl-profile-count').textContent = this.state.savedIds.length;
+
+        // Pills counts
+        document.getElementById('count-cat-all').textContent = SCHOLARSHIPS_DATASET.length;
+        document.getElementById('count-cat-truong').textContent = SCHOLARSHIPS_DATASET.filter(s => s.phanLoai === 'truong').length;
+        document.getElementById('count-cat-dn').textContent = SCHOLARSHIPS_DATASET.filter(s => s.phanLoai === 'doanh-nghiep').length;
+        
+        const eligibleCount = evaluatedAll.filter(s => s.duDieuKien).length;
+        document.getElementById('count-cat-eligible').textContent = eligibleCount;
+
+        // Filter summary
+        const hasCriteria = this.state.criteria.gpa || this.state.criteria.drl || this.state.criteria.khoa || this.state.criteria.nganh || this.state.criteria.nguyenVong !== 'all';
+        const eligibleWrap = document.getElementById('badge-eligible-wrap');
+        if (hasCriteria) {
+          eligibleWrap.style.display = 'inline-flex';
+          document.getElementById('lbl-eligible-count').textContent = eligibleCount;
+        } else {
+          eligibleWrap.style.display = 'none';
+        }
+      },
+
+      // Render danh sách thẻ học bổng (Mục 3)
+      renderScholarshipsGrid() {
+        const list = this.getFilteredScholarships();
+        const container = document.getElementById('scholarships-grid-container');
+        document.getElementById('lbl-total-found').textContent = list.length;
+        this.updateHeaderBadges();
+
+        if (list.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1;">
+              <div class="empty-state-icon">🔍</div>
+              <h3>Không tìm thấy học bổng phù hợp</h3>
+              <p>Hãy thử giảm bớt yêu cầu lọc (GPA, ngành học hoặc khóa) để xem thêm các cơ hội học bổng khác.</p>
+              <button class="btn-reset-filter" onclick="document.getElementById('btn-reset-filters').click()">Xóa bộ lọc</button>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = list.map(item => {
+          const isSaved = this.state.savedIds.includes(item.id);
+          const isLoading = this.state.loadingButtons.has(item.id);
+          
+          let statusLabel = 'Đang nhận hồ sơ';
+          let statusClass = 'status-dang-nhan';
+          if (item.trangThai === 'sap-mo') {
+            statusLabel = 'Sắp mở đăng ký';
+            statusClass = 'status-sap-mo';
+          } else if (item.trangThai === 'het-han') {
+            statusLabel = 'Đã hết hạn';
+            statusClass = 'status-het-han';
+          }
+
+          let deadlineText = `Còn ${item.daysLeft} ngày`;
+          let deadlineClass = '';
+          if (item.daysLeft < 0) {
+            deadlineText = 'Đã đóng';
+            deadlineClass = 'text-muted';
+          } else if (item.daysLeft === 0) {
+            deadlineText = 'Hết hạn HÔM NAY!';
+            deadlineClass = 'deadline-urgent';
+          } else if (item.daysLeft <= 7) {
+            deadlineText = `Chỉ còn ${item.daysLeft} ngày!`;
+            deadlineClass = 'deadline-urgent';
+          }
+
+          const categoryText = item.phanLoai === 'truong' ? 'Học bổng UEH' : 'Doanh nghiệp tài trợ';
+
+          return `
+            <article class="card">
+              <div>
+                <div class="card-top">
+                  <span class="badge-status ${statusClass}">${statusLabel}</span>
+                  <span class="badge-source">${categoryText}</span>
+                </div>
+
+                <h3 class="card-title" title="${item.ten}">${item.ten}</h3>
+
+                <div class="card-stats">
+                  <div class="stat-row">
+                    <span class="stat-label">🎓 Điều kiện:</span>
+                    <span class="stat-value">GPA ≥ ${item.gpaMin} · ĐRL ≥ ${item.drlMin}</span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">💰 Trị giá:</span>
+                    <span class="stat-value money">${item.mucTien}</span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">📅 Hạn chót:</span>
+                    <span class="stat-value ${deadlineClass}">${item.ngayDong} (${deadlineText})</span>
+                  </div>
+                  ${item.doiTuong.khoa.length > 0 ? `
+                  <div class="stat-row">
+                    <span class="stat-label">👥 Khóa:</span>
+                    <span class="stat-value">${item.doiTuong.khoa.join(', ')}</span>
+                  </div>` : ''}
+                </div>
+
+                <!-- Đánh giá điều kiện (Mục 4) -->
+                ${item.duDieuKien ? `
+                  <div class="eligibility-box eligibility-pass">
+                    ✅ Bạn đủ điều kiện nộp hồ sơ (tham khảo)
+                  </div>
+                ` : `
+                  <div class="eligibility-box eligibility-fail">
+                    ⚠️ <strong>Chưa đạt:</strong> ${item.lyDoThieu[0]}
+                    ${item.lyDoThieu.length > 1 ? `<small style="display:block;margin-top:2px;color:var(--gray-600)">+ ${item.lyDoThieu.length - 1} lý do khác</small>` : ''}
+                  </div>
+                `}
+              </div>
+
+              <!-- Thao tác Card -->
+              <div class="card-actions">
+                <button class="btn-detail" onclick="App.openModal('${item.id}')">
+                  👁️ Chi tiết
+                </button>
+                <button 
+                  class="btn-save-toggle ${isSaved ? 'saved' : ''}" 
+                  onclick="App.handleToggleSave('${item.id}')"
+                  ${isLoading ? 'disabled' : ''}
+                >
+                  ${isLoading ? `<span class="spinner"></span> Đang lưu...` : (isSaved ? `✓ Đã lưu` : `+ Hồ sơ của tôi`)}
+                </button>
+              </div>
+            </article>
+          `;
+        }).join('');
+      },
+
+      // Render Mục "Hồ sơ của tôi" (Mục 6)
+      renderProfileSection() {
+        const container = document.getElementById('profile-saved-container');
+        const savedList = this.state.savedIds
+          .map(id => SCHOLARSHIPS_DATASET.find(s => s.id === id))
+          .filter(Boolean)
+          .map(s => this.evaluateScholarship(s, this.state.criteria));
+
+        if (savedList.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📑</div>
+              <h3>Bạn chưa lưu học bổng nào vào Hồ sơ</h3>
+              <p>Hãy bấm nút <strong>"+ Hồ sơ của tôi"</strong> ở các thẻ học bổng để theo dõi hạn nộp và đánh dấu danh mục giấy tờ cần chuẩn bị tại đây.</p>
+              <button class="pill-btn active" onclick="App.switchTab('tab-all')">
+                Khám phá danh sách học bổng ngay
+              </button>
+            </div>
+          `;
+        } else {
+          container.innerHTML = savedList.map(item => {
+            const isLoading = this.state.loadingButtons.has(item.id);
+            const isUrgent = item.daysLeft <= 7 && item.daysLeft >= 0;
+            const itemChecklist = this.state.checklist[item.id] || {};
+            const doneCount = item.giayTo.filter((_, i) => itemChecklist[i]).length;
+            const totalCount = item.giayTo.length;
+            const percent = Math.round((doneCount / totalCount) * 100);
+
+            let deadlineBadgeClass = isUrgent ? 'deadline-urgent' : 'deadline-normal';
+            let deadlineLabel = item.daysLeft < 0 ? 'Đã hết hạn' : (item.daysLeft === 0 ? 'Hết hạn HÔM NAY!' : `Còn ${item.daysLeft} ngày`);
+
+            return `
+              <div class="saved-item-card ${isUrgent ? 'urgent' : ''}">
+                <div class="saved-item-header">
+                  <div>
+                    <span class="deadline-pill ${deadlineBadgeClass}">${deadlineLabel}</span>
+                    <h3 style="margin-top:0.4rem;">${item.ten}</h3>
+                    <p style="font-size:0.82rem; color:var(--gray-500); margin-top:0.2rem;">
+                      Hạn chót: <strong>${item.ngayDong}</strong> · Trị giá: <strong>${item.mucTien}</strong>
+                    </p>
+                    ${isUrgent ? `
+                      <p style="margin-top:0.4rem; font-size:0.8rem; font-weight:700; color:#b91c1c;">
+                        ⏰ Sắp hết hạn! Vui lòng hoàn tất giấy tờ và nộp sớm trước ngày đóng hồ sơ.
+                      </p>
+                    ` : ''}
+                  </div>
+                  <button 
+                    class="btn-reset-filter" 
+                    style="color:#e11d48; border-color:#fca5a5;"
+                    onclick="App.handleToggleSave('${item.id}')"
+                    ${isLoading ? 'disabled' : ''}
+                  >
+                    ${isLoading ? `<span class="spinner" style="border-top-color:#e11d48"></span> Đang xóa...` : `🗑️ Bỏ lưu`}
+                  </button>
+                </div>
+
+                <!-- Bảng kiểm giấy tờ (Checklist) (Mục 6.3) -->
+                <div class="checklist-container">
+                  <div class="checklist-progress-wrap">
+                    <span>📋 Bảng kiểm giấy tờ cần chuẩn bị</span>
+                    <span>${doneCount}/${totalCount} món (${percent}%)</span>
+                  </div>
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: ${percent}%;"></div>
+                  </div>
+
+                  <div class="checklist-items">
+                    ${item.giayTo.map((doc, idx) => {
+                      const isChecked = !!itemChecklist[idx];
+                      return `
+                        <label class="checklist-label">
+                          <input 
+                            type="checkbox" 
+                            class="checklist-checkbox" 
+                            ${isChecked ? 'checked' : ''}
+                            onchange="App.handleToggleChecklist('${item.id}', ${idx})"
+                          />
+                          <span class="checklist-text ${isChecked ? 'checked' : ''}">${doc}</span>
+                        </label>
+                      `;
+                    }).join('')}
+                  </div>
+
+                  <div style="margin-top:0.75rem; font-size:0.8rem; color:var(--gray-500); display:flex; justify-content:space-between; align-items:center;">
+                    <span>Cách nộp: ${item.cachNop}</span>
+                    <button class="btn-detail" style="padding:0.25rem 0.6rem; font-size:0.75rem;" onclick="App.openModal('${item.id}')">Xem hướng dẫn chi tiết ↗</button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Render Pending Proposals (Học bổng DN chờ duyệt)
+        const pendingWrap = document.getElementById('pending-proposals-wrap');
+        const pendingListEl = document.getElementById('pending-proposals-list');
+        if (this.state.pendingList.length > 0) {
+          pendingWrap.style.display = 'block';
+          pendingListEl.innerHTML = this.state.pendingList.map(p => `
+            <div class="pending-card">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.25rem;">
+                <strong>${p.ten}</strong>
+                <span style="background:#fef3c7; color:#92400e; font-size:0.75rem; font-weight:700; padding:0.15rem 0.5rem; border-radius:999px;">
+                  ${p.trangThaiDuyet}
+                </span>
+              </div>
+              <p>🏢 <strong>Đơn vị tài trợ:</strong> ${p.donVi} · 💰 <strong>Mức học bổng:</strong> ${p.mucTien}</p>
+              <p>📅 <strong>Hạn nộp dự kiến:</strong> ${p.hanDong} · 🕒 <strong>Ngày gửi:</strong> ${p.ngayGui}</p>
+              <p style="color:var(--gray-600); margin-top:0.25rem;">📌 <em>${p.dieuKien}</em></p>
+            </div>
+          `).join('');
+        } else {
+          pendingWrap.style.display = 'none';
+        }
+      },
+
+      /**
+       * THAO TÁC BẤT ĐỒNG BỘ: TOGGLE LƯU HỌC BỔNG QUA MOCK API
+       * Luồng: Click -> UI Loading State (Spinner + Disabled) -> MockApiService (Delay 400ms) -> sessionStorage -> Re-render
+       */
+      async handleToggleSave(id) {
+        if (this.state.loadingButtons.has(id)) return;
+
+        // Bật loading state
+        this.state.loadingButtons.add(id);
+        this.renderScholarshipsGrid();
+        if (this.state.activeTab === 'tab-profile') this.renderProfileSection();
+        if (this.state.activeModalId === id) this.renderModalContent(id);
+
+        const startTime = performance.now();
+        const res = await MockApiService.toggleSave(id);
+        const duration = Math.round(performance.now() - startTime);
+
+        this.state.loadingButtons.delete(id);
+
+        if (res.status === 200) {
+          this.state.savedIds = res.data;
+          this.renderAll();
+          if (this.state.activeModalId === id) this.renderModalContent(id);
+
+          const sch = SCHOLARSHIPS_DATASET.find(s => s.id === id);
+          if (res.action === 'added') {
+            this.showToast(`[200 OK] Đã thêm "${sch.ten}" vào Hồ sơ của tôi (${duration}ms)`, 'success');
+          } else {
+            this.showToast(`[200 OK] Đã xóa khỏi Hồ sơ của tôi (${duration}ms)`, 'normal');
+          }
+        }
+      },
+
+      /**
+       * THAO TÁC BẤT ĐỒNG BỘ: TOGGLE CHECKLIST QUA MOCK API
+       */
+      async handleToggleChecklist(scholarshipId, docIndex) {
+        const startTime = performance.now();
+        const res = await MockApiService.toggleChecklistDoc(scholarshipId, docIndex);
+        const duration = Math.round(performance.now() - startTime);
+
+        if (res.status === 200) {
+          this.state.checklist = res.data;
+          this.renderProfileSection();
+          this.showToast(`[200 OK] Đã cập nhật tiến độ giấy tờ (${duration}ms)`, 'success');
+        }
+      },
+
+      /**
+       * THAO TÁC BẤT ĐỒNG BỘ: GỬI HỌC BỔNG DOANH NGHIỆP QUA MOCK API (MỤC 9)
+       */
+      async handleBusinessSubmit(e) {
+        e.preventDefault();
+        if (this.state.isSubmittingBiz) return;
+
+        const btn = document.getElementById('btn-submit-biz');
+        const payload = {
+          ten: document.getElementById('biz-ten').value.trim(),
+          donVi: document.getElementById('biz-donvi').value.trim(),
+          mucTien: document.getElementById('biz-muctien').value.trim(),
+          hanDong: document.getElementById('biz-handong').value,
+          dieuKien: document.getElementById('biz-dieukien').value.trim(),
+          lienHe: document.getElementById('biz-lienhe').value.trim(),
+          cachNop: document.getElementById('biz-cachnop').value.trim() || 'Nộp qua cổng UEH'
+        };
+
+        // Bật loading
+        this.state.isSubmittingBiz = true;
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner"></span> Đang gửi hồ sơ lên hệ thống...`;
+
+        const startTime = performance.now();
+        const res = await MockApiService.submitBusinessScholarship(payload);
+        const duration = Math.round(performance.now() - startTime);
+
+        this.state.isSubmittingBiz = false;
+        btn.disabled = false;
+        btn.innerHTML = `<span>🚀 Gửi đề xuất học bổng để Ban Chăm sóc người học duyệt</span>`;
+
+        if (res.status === 201) {
+          document.getElementById('form-business-scholarship').reset();
+          const pendingRes = await MockApiService.getPendingScholarships();
+          this.state.pendingList = pendingRes.data;
+          this.showToast(`[201 Created] Đã gửi học bổng! Trạng thái: Chờ duyệt (${duration}ms)`, 'success');
+          
+          alert('Cảm ơn Quý Doanh nghiệp! Thông tin học bổng đã được gửi thành công và đang ở trạng thái CHỜ DUYỆT. Ban Chăm sóc người học UEH sẽ kiểm tra và phê duyệt trước khi công bố.');
+          this.switchTab('tab-profile');
+        }
+      },
+
+      /**
+       * MODAL CHI TIẾT HỌC BỔNG (MỤC 5)
+       */
+      openModal(id) {
+        this.state.activeModalId = id;
+        this.renderModalContent(id);
+        document.getElementById('modal-detail-backdrop').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      },
+
+      closeModal() {
+        this.state.activeModalId = null;
+        document.getElementById('modal-detail-backdrop').classList.remove('open');
+        document.body.style.overflow = '';
+      },
+
+      renderModalContent(id) {
+        const itemRaw = SCHOLARSHIPS_DATASET.find(s => s.id === id);
+        if (!itemRaw) return;
+        const item = this.evaluateScholarship(itemRaw, this.state.criteria);
+        const isSaved = this.state.savedIds.includes(item.id);
+        const isLoading = this.state.loadingButtons.has(item.id);
+
+        let statusLabel = 'Đang nhận hồ sơ';
+        let statusClass = 'status-dang-nhan';
+        if (item.trangThai === 'sap-mo') {
+          statusLabel = 'Sắp mở';
+          statusClass = 'status-sap-mo';
+        } else if (item.trangThai === 'het-han') {
+          statusLabel = 'Đã hết hạn';
+          statusClass = 'status-het-han';
+        }
+
+        const body = document.getElementById('modal-detail-body');
+        body.innerHTML = `
+          <h2 class="modal-title" id="modal-detail-title">${item.ten}</h2>
+          <div class="modal-badges">
+            <span class="badge-status ${statusClass}">${statusLabel}</span>
+            <span class="badge-source">${item.phanLoai === 'truong' ? 'Học bổng UEH' : 'Doanh nghiệp tài trợ'}</span>
+            <span class="badge-source">💰 ${item.mucTien}</span>
+            <span class="badge-source">📅 Hạn: ${item.ngayDong} (Còn ${item.daysLeft} ngày)</span>
+          </div>
+
+          <p style="font-size:0.9rem; color:var(--gray-700); line-height:1.6; margin-bottom:1.25rem;">
+            ${item.moTa}
+          </p>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; margin-bottom:1rem;">
+            <div class="modal-section">
+              <h4>🎯 Tiêu chuẩn xét tuyển</h4>
+              <ul>
+                <li><strong>GPA tích lũy:</strong> ≥ ${item.gpaMin}</li>
+                <li><strong>Điểm rèn luyện:</strong> ≥ ${item.drlMin}</li>
+                ${item.doiTuong.khoa.length > 0 ? `<li><strong>Khóa áp dụng:</strong> ${item.doiTuong.khoa.join(', ')}</li>` : '<li><strong>Khóa áp dụng:</strong> Toàn bộ sinh viên UEH</li>'}
+                ${item.doiTuong.nganh.length > 0 ? `<li><strong>Ngành ưu tiên:</strong> ${item.doiTuong.nganh.join(', ')}</li>` : ''}
+                ${item.dieuKienKhac.map(c => `<li>${c}</li>`).join('')}
+              </ul>
+            </div>
+
+            <div class="modal-section">
+              <h4>📑 Hồ sơ & Cách nộp</h4>
+              <ul>
+                ${item.giayTo.map(g => `<li>${g}</li>`).join('')}
+              </ul>
+              <p style="margin-top:0.6rem;"><strong>Cách nộp:</strong> ${item.cachNop}</p>
+              <p style="margin-top:0.35rem; color:var(--gray-500); font-size:0.8rem;">
+                <strong>Đơn vị xét tuyển:</strong> ${item.nguon.donVi}
+              </p>
+            </div>
+          </div>
+
+          <!-- Đánh giá mức độ phù hợp với người dùng -->
+          ${item.duDieuKien ? `
+            <div class="eligibility-box eligibility-pass">
+              ✅ Bạn hoàn toàn đủ điều kiện nộp hồ sơ học bổng này dựa trên thông tin đã nhập!
+            </div>
+          ` : `
+            <div class="eligibility-box eligibility-fail">
+              <strong>⚠️ Tiêu chí bạn còn thiếu:</strong>
+              <ul>
+                ${item.lyDoThieu.map(r => `<li>${r}</li>`).join('')}
+              </ul>
+            </div>
+          `}
+
+          <div class="modal-actions">
+            <button 
+              class="btn-save-toggle ${isSaved ? 'saved' : ''}" 
+              style="flex:2;"
+              onclick="App.handleToggleSave('${item.id}')"
+              ${isLoading ? 'disabled' : ''}
+            >
+              ${isLoading ? `<span class="spinner"></span> Đang xử lý...` : (isSaved ? `✓ Bỏ khỏi Hồ sơ của tôi` : `+ Thêm vào Hồ sơ của tôi`)}
+            </button>
+            <a 
+              href="${item.nguon.url}" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="btn-detail" 
+              style="flex:1; text-align:center; text-decoration:none;"
+            >
+              Xem nguồn gốc ↗
+            </a>
+          </div>
+        `;
+      },
+
+      /**
+       * HỆ THỐNG THÔNG BÁO WEB NOTIFICATION API (MỤC 7)
+       */
+      async toggleNotifications() {
+        if (!('Notification' in window)) {
+          alert('Trình duyệt của bạn hiện chưa hỗ trợ Web Notification API native.');
+          return;
+        }
+
+        if (Notification.permission === 'granted') {
+          this.showToast('🔔 Thông báo nhắc nhở hạn nộp học bổng đang hoạt động', 'normal');
+          this.triggerUrgentDeadlineNotification();
+        } else {
+          try {
+            const permission = await Notification.requestPermission();
+            this.checkNotificationStatus();
+            if (permission === 'granted') {
+              this.showToast('✅ Đã bật thông báo nhắc hạn thành công', 'success');
+              new Notification('Học bổng Sinh viên UEH', {
+                body: 'Hệ thống sẽ tự động nhắc bạn trước khi các học bổng đã lưu hết hạn nộp hồ sơ!',
+                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🎓</text></svg>'
+              });
+              this.triggerUrgentDeadlineNotification();
+            } else {
+              this.showToast('Bạn đã từ chối nhận thông báo', 'normal');
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      },
+
+      checkNotificationStatus() {
+        const isGranted = ('Notification' in window) && Notification.permission === 'granted';
+        const notifBtns = [document.getElementById('btn-toggle-notif'), document.getElementById('btn-profile-notif')];
+        notifBtns.forEach(btn => {
+          if (!btn) return;
+          if (isGranted) {
+            btn.classList.add('active');
+            btn.querySelector('span').textContent = 'Đã bật nhắc hạn';
+          } else {
+            btn.classList.remove('active');
+            btn.querySelector('span').textContent = 'Bật nhắc hạn nộp';
+          }
+        });
+      },
+
+      triggerUrgentDeadlineNotification() {
+        if (!('Notification' in window) || Notification.permission !== 'granted') return;
+        const savedList = this.state.savedIds
+          .map(id => SCHOLARSHIPS_DATASET.find(s => s.id === id))
+          .filter(Boolean)
+          .map(s => this.evaluateScholarship(s, this.state.criteria));
+
+        const urgent = savedList.filter(s => s.daysLeft <= 7 && s.daysLeft >= 0);
+        if (urgent.length > 0) {
+          urgent.forEach(s => {
+            new Notification('⏰ Nhắc hạn học bổng UEH!', {
+              body: `${s.ten} chỉ còn ${s.daysLeft} ngày là hết hạn (${s.ngayDong}). Mau chuẩn bị giấy tờ nhé!`,
+              icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">⏰</text></svg>'
+            });
+          });
+        }
+      },
+
+      /**
+       * TOAST NOTIFICATION UTILITY
+       */
+      showToast(message, type = 'normal') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+          <span>${type === 'success' ? '⚡' : 'ℹ️'}</span>
+          <span>${message}</span>
+        `;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 3500);
+      }
+    };
+
+    // Khởi chạy ứng dụng khi DOM tải xong
+    document.addEventListener('DOMContentLoaded', () => {
+      App.init();
+    });
+  </script>
+</body>
+</html>
