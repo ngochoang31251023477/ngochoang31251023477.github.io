@@ -480,10 +480,31 @@
     .badge-source {
       font-size: 0.75rem;
       font-weight: 600;
-      color: var(--gray-500);
+      color: var(--gray-600);
       background: var(--gray-100);
-      padding: 0.2rem 0.5rem;
+      padding: 0.2rem 0.55rem;
       border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .badge-source-truong {
+      color: var(--ueh-primary-dark) !important;
+      background: var(--ueh-emerald-bg) !important;
+      border: 1px solid var(--ueh-emerald-border);
+    }
+
+    .badge-source-dn-ueh {
+      color: #1d4ed8 !important;
+      background: #eff6ff !important;
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-source-dn-ngoai {
+      color: #6d28d9 !important;
+      background: #f5f3ff !important;
+      border: 1px solid #ddd6fe;
     }
 
     .card-title {
@@ -1237,6 +1258,14 @@
       .filter-grid {
         grid-template-columns: 1fr 1fr;
       }
+      .category-pills {
+        gap: 0.4rem;
+        margin-bottom: 1rem;
+      }
+      .pill-btn {
+        padding: 0.42rem 0.8rem;
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -1274,9 +1303,6 @@
         </button>
         <button class="nav-tab-btn" data-tab="tab-guide">
           <span>📋 Hướng dẫn giấy tờ</span>
-        </button>
-        <button class="nav-tab-btn" data-tab="tab-business">
-          <span>🏢 Cổng Doanh nghiệp</span>
         </button>
       </nav>
     </div>
@@ -1356,11 +1382,12 @@
         </div>
       </div>
 
-      <!-- Category Filter Pills -->
+      <!-- Category Filter Pills (5 phân loại theo phản hồi khách hàng) -->
       <div class="category-pills">
         <button class="pill-btn active" data-cat="all">Tất cả học bổng (<span id="count-cat-all">0</span>)</button>
         <button class="pill-btn" data-cat="truong">🏛️ Học bổng UEH (<span id="count-cat-truong">0</span>)</button>
-        <button class="pill-btn" data-cat="doanh-nghiep">🏢 Doanh nghiệp tài trợ (<span id="count-cat-dn">0</span>)</button>
+        <button class="pill-btn" data-cat="dn-ueh">🏢 HB Doanh nghiệp tài trợ UEH (<span id="count-cat-dn-ueh">0</span>)</button>
+        <button class="pill-btn" data-cat="dn-ngoai">🌐 Doanh nghiệp bên ngoài (<span id="count-cat-dn-ngoai">0</span>)</button>
         <button class="pill-btn" data-cat="du-dieu-kien">✅ Đủ điều kiện nộp (<span id="count-cat-eligible">0</span>)</button>
       </div>
 
@@ -1389,17 +1416,6 @@
         <!-- Danh sách học bổng đã lưu -->
         <div id="profile-saved-container" class="saved-list">
           <!-- Rendered by RenderController -->
-        </div>
-
-        <!-- Danh sách học bổng doanh nghiệp gửi đang chờ duyệt -->
-        <div id="pending-proposals-wrap" class="pending-proposals-box" style="display:none;">
-          <h3 class="pending-title">⏳ Học bổng Doanh nghiệp đã gửi — Đang chờ Ban Chăm sóc người học duyệt</h3>
-          <p style="font-size:0.82rem; color:var(--gray-600); margin-bottom:0.75rem;">
-            Các gói học bổng này do đối tác doanh nghiệp vừa gửi qua Cổng tiếp nhận. Thông tin cần được Ban Chăm sóc người học UEH đối chiếu và kiểm duyệt trước khi công bố công khai trên trang chủ.
-          </p>
-          <div id="pending-proposals-list">
-            <!-- Rendered by RenderController -->
-          </div>
         </div>
       </div>
     </section>
@@ -1486,64 +1502,6 @@
       </div>
     </section>
 
-
-    <!-- ====================================================================
-         TAB 4: CỔNG NHẬN THÔNG TIN TỪ DOANH NGHIỆP (MỤC 9)
-         ==================================================================== -->
-    <section id="tab-business" class="tab-content">
-      <div class="business-section">
-        <h2 class="guide-title">🏢 Cổng tiếp nhận tài trợ học bổng từ Doanh nghiệp</h2>
-        <p class="guide-subtitle">
-          Quý Doanh nghiệp, Tổ chức tài trợ vui lòng điền thông tin chương trình học bổng mới tại biểu mẫu bên dưới.
-          Thông tin sau khi gửi sẽ được chuyển vào <strong>trạng thái chờ duyệt (Pending State)</strong> để Ban Chăm sóc người học UEH đối chiếu và phê duyệt trước khi công bố rộng rãi đến sinh viên.
-        </p>
-
-        <form id="form-business-scholarship">
-          <div class="form-grid">
-            <div class="form-group">
-              <label class="form-label" for="biz-ten">Tên gói học bổng *</label>
-              <input type="text" id="biz-ten" class="form-input" placeholder="VD: Học bổng Thắp sáng Tài năng Trẻ 2026" required />
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="biz-donvi">Tên Doanh nghiệp / Tổ chức tài trợ *</label>
-              <input type="text" id="biz-donvi" class="form-input" placeholder="VD: Tập đoàn Công nghệ Tài chính Alpha" required />
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="biz-muctien">Mức tiền / Trị giá mỗi suất *</label>
-              <input type="text" id="biz-muctien" class="form-input" placeholder="VD: 15.000.000 VNĐ / suất" required />
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="biz-handong">Hạn nộp dự kiến *</label>
-              <input type="date" id="biz-handong" class="form-input" required />
-            </div>
-
-            <div class="form-group full-col">
-              <label class="form-label" for="biz-dieukien">Tiêu chuẩn & Điều kiện ứng tuyển (GPA, Khóa, Ngành...) *</label>
-              <textarea id="biz-dieukien" class="form-textarea" rows="3" placeholder="VD: GPA từ 3.0 trở lên; Ưu tiên sinh viên khóa K51, K52 khối ngành Kinh tế, Tài chính, Công nghệ; Năng nổ trong hoạt động Đoàn - Hội..." required></textarea>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="biz-lienhe">Người liên hệ & Điện thoại / Email *</label>
-              <input type="text" id="biz-lienhe" class="form-input" placeholder="VD: Nguyễn Văn A - hr@alpha.vn - 0901234567" required />
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="biz-cachnop">Hình thức nhận hồ sơ</label>
-              <input type="text" id="biz-cachnop" class="form-input" placeholder="VD: Nộp online qua link của doanh nghiệp hoặc nộp qua DSA UEH" />
-            </div>
-
-            <div class="form-group full-col">
-              <button type="submit" id="btn-submit-biz" class="btn-submit-biz">
-                <span>🚀 Gửi đề xuất học bổng để Ban Chăm sóc người học duyệt</span>
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </section>
 
   </main>
 
@@ -1642,7 +1600,7 @@
         id: "dn-vietcombank-2026",
         ten: "Học bổng Vietcombank Tiếp bước Tương lai 2026",
         loai: "DN",
-        phanLoai: "doanh-nghiep",
+        phanLoai: "dn-ueh",
         doiTuong: { khoa: ["K50", "K51", "K52"], nganh: ["Kinh doanh", "Tài chính", "Ngân hàng", "Kế toán"] },
         gpaMin: 3.0,
         drlMin: 75,
@@ -1659,7 +1617,7 @@
         id: "dn-lotte-2026",
         ten: "Học bổng LOTTE Foundation 2026",
         loai: "DN",
-        phanLoai: "doanh-nghiep",
+        phanLoai: "dn-ngoai",
         doiTuong: { khoa: ["K51", "K52"], nganh: ["Marketing", "Kinh doanh quốc tế", "Thương mại điện tử"] },
         gpaMin: 2.8,
         drlMin: 70,
@@ -1676,7 +1634,7 @@
         id: "dn-ajinomoto-2026",
         ten: "Học bổng Tài năng Ajinomoto 2026",
         loai: "DN",
-        phanLoai: "doanh-nghiep",
+        phanLoai: "dn-ueh",
         doiTuong: { khoa: ["K50", "K51"], nganh: ["Quản trị kinh doanh", "Logistics", "Chuỗi cung ứng"] },
         gpaMin: 3.2,
         drlMin: 75,
@@ -1710,7 +1668,7 @@
         id: "dn-bidv-2026",
         ten: "Học bổng BIDV Ươm mầm Tài năng Ngân hàng 2026",
         loai: "DN",
-        phanLoai: "doanh-nghiep",
+        phanLoai: "dn-ueh",
         doiTuong: { khoa: ["K50", "K51"], nganh: ["Tài chính", "Ngân hàng", "Kinh tế"] },
         gpaMin: 3.4,
         drlMin: 80,
@@ -1744,7 +1702,7 @@
         id: "dn-vingroup-2026",
         ten: "Học bổng Công nghệ Vingroup 2026",
         loai: "DN",
-        phanLoai: "doanh-nghiep",
+        phanLoai: "dn-ngoai",
         doiTuong: { khoa: ["K50"], nganh: ["Công nghệ thông tin", "Kinh tế số", "Khoa học dữ liệu"] },
         gpaMin: 3.6,
         drlMin: 85,
@@ -1761,7 +1719,7 @@
         id: "dn-sacombank-2026",
         ten: "Học bổng Sacombank Ươm mầm Ước mơ 2026",
         loai: "DN",
-        phanLoai: "doanh-nghiep",
+        phanLoai: "dn-ueh",
         doiTuong: { khoa: ["K51", "K52"], nganh: [] },
         gpaMin: 3.0,
         drlMin: 70,
@@ -1773,6 +1731,23 @@
         giayTo: ["Đơn xin học bổng", "Bảng điểm tích lũy"],
         moTa: "Học bổng đồng hành cùng thế hệ trẻ UEH, mang đến hành trang kiến thức và trải nghiệm môi trường làm việc tài chính chuyên nghiệp.",
         nguon: { url: "https://dsa.ueh.edu.vn/hoc-bong-sacombank", donVi: "Ngân hàng TMCP Sài Gòn Thương Tín (Sacombank)" }
+      },
+      {
+        id: "dn-panasonic-2026",
+        ten: "Học bổng Panasonic vì Tương lai Năng động 2026",
+        loai: "DN",
+        phanLoai: "dn-ngoai",
+        doiTuong: { khoa: ["K50", "K51", "K52"], nganh: [] },
+        gpaMin: 3.0,
+        drlMin: 70,
+        dieuKienKhac: ["Ưu tiên sinh viên có tinh thần đổi mới sáng tạo, có đề xuất dự án cộng đồng"],
+        mucTien: "30.000.000 VNĐ/năm + Khóa đào tạo kỹ năng mềm",
+        ngayMo: "2026-10-15",
+        ngayDong: "2026-12-05",
+        cachNop: "Nộp hồ sơ trực tuyến trực tiếp tại cổng học bổng Panasonic Việt Nam",
+        giayTo: ["Đơn ứng tuyển học bổng Panasonic", "Bảng điểm đại học", "Video giới thiệu bản thân 2 phút"],
+        moTa: "Chương trình học bổng thường niên của Tập đoàn Panasonic dành cho sinh viên xuất sắc trên toàn quốc có đam mê đổi mới sáng tạo.",
+        nguon: { url: "https://www.panasonic.com/vn/corporate/sustainability/scholarship.html", donVi: "Công ty TNHH Panasonic Việt Nam" }
       }
     ];
 
@@ -1997,9 +1972,11 @@
         document.getElementById('btn-toggle-notif').addEventListener('click', () => this.toggleNotifications());
         document.getElementById('btn-profile-notif').addEventListener('click', () => this.toggleNotifications());
 
-        // Business Form submit
+        // Business Form submit (nếu có)
         const bizForm = document.getElementById('form-business-scholarship');
-        bizForm.addEventListener('submit', (e) => this.handleBusinessSubmit(e));
+        if (bizForm) {
+          bizForm.addEventListener('submit', (e) => this.handleBusinessSubmit(e));
+        }
       },
 
       // Xử lý thay đổi bộ lọc
@@ -2086,7 +2063,7 @@
         };
       },
 
-      // Lấy danh sách đã đánh giá và lọc
+      // Lấy danh sách đã đánh giá và lọc (5 phân loại)
       getFilteredScholarships() {
         const evaluated = SCHOLARSHIPS_DATASET.map(s => this.evaluateScholarship(s, this.state.criteria));
 
@@ -2094,8 +2071,10 @@
         let filtered = evaluated;
         if (this.state.categoryFilter === 'truong') {
           filtered = filtered.filter(s => s.phanLoai === 'truong');
-        } else if (this.state.categoryFilter === 'doanh-nghiep') {
-          filtered = filtered.filter(s => s.phanLoai === 'doanh-nghiep');
+        } else if (this.state.categoryFilter === 'dn-ueh') {
+          filtered = filtered.filter(s => s.phanLoai === 'dn-ueh');
+        } else if (this.state.categoryFilter === 'dn-ngoai') {
+          filtered = filtered.filter(s => s.phanLoai === 'dn-ngoai');
         } else if (this.state.categoryFilter === 'du-dieu-kien') {
           filtered = filtered.filter(s => s.duDieuKien);
         }
@@ -2120,30 +2099,41 @@
         this.updateHeaderBadges();
       },
 
-      // Cập nhật các badge số lượng trên header và pills
+      // Cập nhật các badge số lượng trên header và 5 pills
       updateHeaderBadges() {
         const evaluatedAll = SCHOLARSHIPS_DATASET.map(s => this.evaluateScholarship(s, this.state.criteria));
         
-        document.getElementById('badge-total-count').textContent = SCHOLARSHIPS_DATASET.length;
-        document.getElementById('badge-saved-count').textContent = this.state.savedIds.length;
-        document.getElementById('lbl-profile-count').textContent = this.state.savedIds.length;
+        const badgeTotal = document.getElementById('badge-total-count');
+        if (badgeTotal) badgeTotal.textContent = SCHOLARSHIPS_DATASET.length;
+        const badgeSaved = document.getElementById('badge-saved-count');
+        if (badgeSaved) badgeSaved.textContent = this.state.savedIds.length;
+        const lblProfile = document.getElementById('lbl-profile-count');
+        if (lblProfile) lblProfile.textContent = this.state.savedIds.length;
 
-        // Pills counts
-        document.getElementById('count-cat-all').textContent = SCHOLARSHIPS_DATASET.length;
-        document.getElementById('count-cat-truong').textContent = SCHOLARSHIPS_DATASET.filter(s => s.phanLoai === 'truong').length;
-        document.getElementById('count-cat-dn').textContent = SCHOLARSHIPS_DATASET.filter(s => s.phanLoai === 'doanh-nghiep').length;
+        // 5 Pills counts
+        const elAll = document.getElementById('count-cat-all');
+        if (elAll) elAll.textContent = SCHOLARSHIPS_DATASET.length;
+        const elTruong = document.getElementById('count-cat-truong');
+        if (elTruong) elTruong.textContent = SCHOLARSHIPS_DATASET.filter(s => s.phanLoai === 'truong').length;
+        const elDnUeh = document.getElementById('count-cat-dn-ueh');
+        if (elDnUeh) elDnUeh.textContent = SCHOLARSHIPS_DATASET.filter(s => s.phanLoai === 'dn-ueh').length;
+        const elDnNgoai = document.getElementById('count-cat-dn-ngoai');
+        if (elDnNgoai) elDnNgoai.textContent = SCHOLARSHIPS_DATASET.filter(s => s.phanLoai === 'dn-ngoai').length;
         
         const eligibleCount = evaluatedAll.filter(s => s.duDieuKien).length;
-        document.getElementById('count-cat-eligible').textContent = eligibleCount;
+        const elEligible = document.getElementById('count-cat-eligible');
+        if (elEligible) elEligible.textContent = eligibleCount;
 
         // Filter summary
         const hasCriteria = this.state.criteria.gpa || this.state.criteria.drl || this.state.criteria.khoa || this.state.criteria.nganh || this.state.criteria.nguyenVong !== 'all';
         const eligibleWrap = document.getElementById('badge-eligible-wrap');
-        if (hasCriteria) {
-          eligibleWrap.style.display = 'inline-flex';
-          document.getElementById('lbl-eligible-count').textContent = eligibleCount;
-        } else {
-          eligibleWrap.style.display = 'none';
+        if (eligibleWrap) {
+          if (hasCriteria) {
+            eligibleWrap.style.display = 'inline-flex';
+            document.getElementById('lbl-eligible-count').textContent = eligibleCount;
+          } else {
+            eligibleWrap.style.display = 'none';
+          }
         }
       },
 
@@ -2193,14 +2183,22 @@
             deadlineClass = 'deadline-urgent';
           }
 
-          const categoryText = item.phanLoai === 'truong' ? 'Học bổng UEH' : 'Doanh nghiệp tài trợ';
+          let categoryText = '🏛️ Học bổng UEH';
+          let categoryBadgeClass = 'badge-source-truong';
+          if (item.phanLoai === 'dn-ueh') {
+            categoryText = '🏢 DN tài trợ UEH';
+            categoryBadgeClass = 'badge-source-dn-ueh';
+          } else if (item.phanLoai === 'dn-ngoai') {
+            categoryText = '🌐 DN bên ngoài';
+            categoryBadgeClass = 'badge-source-dn-ngoai';
+          }
 
           return `
             <article class="card">
               <div>
                 <div class="card-top">
                   <span class="badge-status ${statusClass}">${statusLabel}</span>
-                  <span class="badge-source">${categoryText}</span>
+                  <span class="badge-source ${categoryBadgeClass}">${categoryText}</span>
                 </div>
 
                 <h3 class="card-title" title="${item.ten}">${item.ten}</h3>
@@ -2349,26 +2347,28 @@
           }).join('');
         }
 
-        // Render Pending Proposals (Học bổng DN chờ duyệt)
+        // Render Pending Proposals (Học bổng DN chờ duyệt nếu còn phần tử)
         const pendingWrap = document.getElementById('pending-proposals-wrap');
         const pendingListEl = document.getElementById('pending-proposals-list');
-        if (this.state.pendingList.length > 0) {
-          pendingWrap.style.display = 'block';
-          pendingListEl.innerHTML = this.state.pendingList.map(p => `
-            <div class="pending-card">
-              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.25rem;">
-                <strong>${p.ten}</strong>
-                <span style="background:#fef3c7; color:#92400e; font-size:0.75rem; font-weight:700; padding:0.15rem 0.5rem; border-radius:999px;">
-                  ${p.trangThaiDuyet}
-                </span>
+        if (pendingWrap && pendingListEl) {
+          if (this.state.pendingList.length > 0) {
+            pendingWrap.style.display = 'block';
+            pendingListEl.innerHTML = this.state.pendingList.map(p => `
+              <div class="pending-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.25rem;">
+                  <strong>${p.ten}</strong>
+                  <span style="background:#fef3c7; color:#92400e; font-size:0.75rem; font-weight:700; padding:0.15rem 0.5rem; border-radius:999px;">
+                    ${p.trangThaiDuyet}
+                  </span>
+                </div>
+                <p>🏢 <strong>Đơn vị tài trợ:</strong> ${p.donVi} · 💰 <strong>Mức học bổng:</strong> ${p.mucTien}</p>
+                <p>📅 <strong>Hạn nộp dự kiến:</strong> ${p.hanDong} · 🕒 <strong>Ngày gửi:</strong> ${p.ngayGui}</p>
+                <p style="color:var(--gray-600); margin-top:0.25rem;">📌 <em>${p.dieuKien}</em></p>
               </div>
-              <p>🏢 <strong>Đơn vị tài trợ:</strong> ${p.donVi} · 💰 <strong>Mức học bổng:</strong> ${p.mucTien}</p>
-              <p>📅 <strong>Hạn nộp dự kiến:</strong> ${p.hanDong} · 🕒 <strong>Ngày gửi:</strong> ${p.ngayGui}</p>
-              <p style="color:var(--gray-600); margin-top:0.25rem;">📌 <em>${p.dieuKien}</em></p>
-            </div>
-          `).join('');
-        } else {
-          pendingWrap.style.display = 'none';
+            `).join('');
+          } else {
+            pendingWrap.style.display = 'none';
+          }
         }
       },
 
@@ -2452,7 +2452,8 @@
         btn.innerHTML = `<span>🚀 Gửi đề xuất học bổng để Ban Chăm sóc người học duyệt</span>`;
 
         if (res.status === 201) {
-          document.getElementById('form-business-scholarship').reset();
+          const bizEl = document.getElementById('form-business-scholarship');
+          if (bizEl) bizEl.reset();
           const pendingRes = await MockApiService.getPendingScholarships();
           this.state.pendingList = pendingRes.data;
           this.showToast(`[201 Created] Đã gửi học bổng! Trạng thái: Chờ duyệt (${duration}ms)`, 'success');
@@ -2495,12 +2496,22 @@
           statusClass = 'status-het-han';
         }
 
+        let modalCategoryText = '🏛️ Học bổng UEH';
+        let modalCategoryClass = 'badge-source-truong';
+        if (item.phanLoai === 'dn-ueh') {
+          modalCategoryText = '🏢 HB Doanh nghiệp tài trợ UEH';
+          modalCategoryClass = 'badge-source-dn-ueh';
+        } else if (item.phanLoai === 'dn-ngoai') {
+          modalCategoryText = '🌐 Doanh nghiệp bên ngoài';
+          modalCategoryClass = 'badge-source-dn-ngoai';
+        }
+
         const body = document.getElementById('modal-detail-body');
         body.innerHTML = `
           <h2 class="modal-title" id="modal-detail-title">${item.ten}</h2>
           <div class="modal-badges">
             <span class="badge-status ${statusClass}">${statusLabel}</span>
-            <span class="badge-source">${item.phanLoai === 'truong' ? 'Học bổng UEH' : 'Doanh nghiệp tài trợ'}</span>
+            <span class="badge-source ${modalCategoryClass}">${modalCategoryText}</span>
             <span class="badge-source">💰 ${item.mucTien}</span>
             <span class="badge-source">📅 Hạn: ${item.ngayDong} (Còn ${item.daysLeft} ngày)</span>
           </div>
